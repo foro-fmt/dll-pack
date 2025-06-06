@@ -3,7 +3,6 @@
 //!
 //! - Loading dynamic libraries from .dllpack files
 //! - Managing library dependencies
-//! - Caching loaded libraries for performance
 //! - Cross-platform support including WASM
 //! - Safe function calling interfaces
 
@@ -14,22 +13,19 @@ use std::ops::Deref;
 use std::path::PathBuf;
 use url::Url;
 use wasmtime::IntoFunc;
-// Public modules that comprise the main API
-pub mod dependency; // Dependency management and resolution
-pub mod dllpack_file; // DLLPack file format handling
-mod download; // Internal module for downloading libraries
-mod fs_utils; // Internal file system utilities
-pub mod load; // Core library loading functionality
-pub mod process_cache_multi; // Multiprocess caching of loaded libraries
-pub mod process_cache_single; // Process-level caching of loaded libraries
-pub mod resolve; // Dependency resolution logic
+pub mod dependency;
+pub mod dllpack_file;
+mod download;
+mod fs_utils;
+pub mod load;
+pub mod resolve;
+pub mod target_triple;
 mod type_utils;
-// Internal type utilities and helpers
 
 // Re-export commonly used types and functions for convenience
 pub use load::{load, load_with_platform, load_with_wasm, Function, Library};
-pub use process_cache_multi::{run_multi_cached, run_multi_cached_with_platform};
-pub use process_cache_single::{run_single_cached, run_single_cached_with_platform};
+pub use resolve::ResolveError;
+pub use target_triple::THIS_PLATFORM;
 
 #[cfg(test)]
 mod tests {

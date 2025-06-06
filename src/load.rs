@@ -24,6 +24,7 @@ use url::Url;
 use wasmtime::{Config, Engine, Instance as WasmInstance, Linker, Module, Store, TypedFunc};
 use wasmtime_wasi::preview1::WasiP1Ctx;
 use wasmtime_wasi::{preview1, DirPerms, FilePerms, WasiCtxBuilder};
+use crate::target_triple::THIS_PLATFORM;
 
 /// It represents a callable function loaded from a library,
 /// abstracting both native and WASM libraries.
@@ -276,7 +277,7 @@ pub fn load_with_platform(url: &Url, work_dir: &PathBuf, platform: &str) -> Resu
 /// and falls back to WASM if necessary.
 /// This provides transparent cross-platform support with WASM as a fallback.
 pub fn load(url: &Url, work_dir: &PathBuf) -> Result<Library> {
-    let this_platform = env!("TARGET_TRIPLE");
+    let this_platform = THIS_PLATFORM;
     let with_this_platform = load_with_platform(url, work_dir, this_platform);
 
     let res = match with_this_platform {
