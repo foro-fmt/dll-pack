@@ -6,12 +6,17 @@
 //! - Cross-platform support including WASM
 //! - Safe function calling interfaces
 
+use crate::type_utils::{Caller, IOToFn};
+#[cfg(windows)]
+use libloading::os::windows::{Library as LLLibrary, Symbol};
+use std::ops::Deref;
+use std::path::PathBuf;
+use url::Url;
+use wasmtime::IntoFunc;
 pub mod dependency;
 pub mod dllpack_file;
 mod download;
 mod fs_utils;
-#[cfg(target_os = "linux")]
-mod linux_dlmopen;
 pub mod load;
 pub mod resolve;
 pub mod target_triple;
