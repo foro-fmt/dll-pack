@@ -24,7 +24,7 @@ mod type_utils;
 
 // Re-export commonly used types and functions for convenience
 pub use load::{load, load_with_platform, load_with_wasm, Function, Library};
-pub use resolve::ResolveError;
+pub use resolve::{prefetch, ResolveError};
 pub use target_triple::THIS_PLATFORM;
 
 #[cfg(test)]

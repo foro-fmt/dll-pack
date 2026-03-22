@@ -274,6 +274,13 @@ pub fn get_all_cached_dependencies(
     Ok(Some(result))
 }
 
+/// Downloads all manifests and libraries for the given dllpack URL and platform,
+/// without loading them. Useful for pre-fetching plugins before use.
+pub fn prefetch(url: &Url, work_dir: &PathBuf, platform: &str) -> Result<()> {
+    resolve(url, work_dir, platform)?;
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
