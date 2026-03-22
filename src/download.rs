@@ -77,14 +77,17 @@ pub fn download_lib(dll_info: &DllInfo) -> Result<()> {
         ));
     }
 
-    DirBuilder::new()
-        .recursive(true)
-        .create(dll_info.path.parent().unwrap())?;
+    let parent = dll_info.path.parent().unwrap();
+    DirBuilder::new().recursive(true).create(parent)?;
 
-    let mut file = fs::File::create(&dll_info.path)?;
+    let tmp_path = parent.join(format!(".tmp.{}", dll_info.name));
+    let mut file = fs::File::create(&tmp_path)?;
 
     let content = res.bytes()?;
     file.write_all(&content)?;
+    drop(file);
+
+    fs::rename(&tmp_path, &dll_info.path)?;
 
     Ok(())
 }
@@ -132,14 +135,20 @@ pub fn download_manifest(manifest_info: &ManifestInfo) -> Result<()> {
         ));
     }
 
-    DirBuilder::new()
-        .recursive(true)
-        .create(manifest_info.path.parent().unwrap())?;
+    let parent = manifest_info.path.parent().unwrap();
+    DirBuilder::new().recursive(true).create(parent)?;
 
-    let mut file = fs::File::create(&manifest_info.path)?;
+    let tmp_path = parent.join(format!(
+        ".tmp.{}",
+        manifest_info.path.file_name().unwrap().to_string_lossy()
+    ));
+    let mut file = fs::File::create(&tmp_path)?;
 
     let content = res.bytes()?;
     file.write_all(&content)?;
+    drop(file);
+
+    fs::rename(&tmp_path, &manifest_info.path)?;
 
     Ok(())
 }

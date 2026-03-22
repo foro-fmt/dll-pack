@@ -6,7 +6,9 @@ extern "C" {
 pub extern "C" fn call_hello_world() {
     unsafe {
         let c_str = hello_world();
-        let message = std::ffi::CStr::from_ptr(c_str as *const i8).to_str().unwrap();
+        let message = std::ffi::CStr::from_ptr(c_str as *const i8)
+            .to_str()
+            .unwrap();
         println!("{}", message);
     }
 }
