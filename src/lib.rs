@@ -15,7 +15,7 @@ use url::Url;
 use wasmtime::IntoFunc;
 pub mod dependency;
 pub mod dllpack_file;
-mod download;
+pub mod download;
 mod fs_utils;
 pub mod load;
 pub mod resolve;
@@ -24,7 +24,7 @@ mod type_utils;
 
 // Re-export commonly used types and functions for convenience
 pub use load::{load, load_with_platform, load_with_wasm, Function, Library};
-pub use resolve::{prefetch, ResolveError};
+pub use resolve::{download, ResolveError};
 pub use target_triple::THIS_PLATFORM;
 
 #[cfg(test)]
